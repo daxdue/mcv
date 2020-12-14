@@ -21,7 +21,9 @@ conf_thres=0.8
 nms_thres=0.4
 
 # Load model and weights
-
+img_p = input()
+img_path = img_p
+img = Image.open(img_path)
 
 model = Darknet(config_path, img_size=img_size)
 
@@ -55,10 +57,7 @@ def detect_image(img):
         detections = model(input_img)
         detections = utils.non_max_suppression(detections, 80, conf_thres, nms_thres)
     return detections[0]
-img_p = input()
-img_path = img_p
 
-img = Image.open(img_path)
 
 #Start inference
 prev_time = time.time()
