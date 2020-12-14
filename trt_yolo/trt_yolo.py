@@ -60,6 +60,7 @@ def loop_and_detect(cam, trt_yolo, conf_th, vis):
         curr_fps = 1/ (toc - tic)
         # calculate an exponentially decaying average of fps number
         fps = curr_fps if fps == 0.0 else (fps*0.95 + curr_fps*0.05)
+        print ('Inference Time: %s' % (toc-tic))
         tic = toc
         key = cv2.waitKey(1)
         if key == 27:  # ESC key: quit program

@@ -63,8 +63,9 @@ img = Image.open(img_path)
 #Start inference
 prev_time = time.time()
 
-while True:
-
+counter = 0
+while counter < 10:
+    counter = counter + 1
     detections = detect_image(img)
     inference_time = datetime.timedelta(seconds=time.time() - prev_time)
     print ('Inference Time: %s' % (inference_time))
