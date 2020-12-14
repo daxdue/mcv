@@ -1,16 +1,10 @@
-"""trt_yolo.py
-
-This script demonstrates how to do real-time object detection with
-TensorRT optimized YOLO engine.
-"""
-
 import torch
 import os
 import time
 import argparse
 import datetime
 import cv2
-import pycuda.autoinit  # This is needed for initializing CUDA driver
+import pycuda.autoinit
 
 from pytorch_memlab import LineProfiler
 from pytorch_memlab import MemReporter
@@ -48,14 +42,7 @@ def parse_args():
 
 
 def loop_and_detect(cam, trt_yolo, conf_th, vis):
-    """Continuously capture images from camera and do object detection.
 
-    # Arguments
-      cam: the camera instance (video source).
-      trt_yolo: the TRT YOLO object detector instance.
-      conf_th: confidence/score threshold for object detection.
-      vis: for visualization.
-    """
     full_scrn = False
     fps = 0.0
     tic = time.time()
@@ -76,6 +63,7 @@ def loop_and_detect(cam, trt_yolo, conf_th, vis):
         tic = toc
         key = cv2.waitKey(1)
         if key == 27:  # ESC key: quit program
+            cv2.imwrite("trt_yolo_result.jpg", img)
             break
         elif key == ord('F') or key == ord('f'):  # Toggle fullscreen
             full_scrn = not full_scrn
@@ -114,11 +102,6 @@ def main():
         WINDOW_NAME, 'Camera TensorRT YOLO Demo',
         cam.img_width, cam.img_height)
     vis = BBoxVisualization(cls_dict)
-
-    #total_memory = torch.cuda.get_device_properties(0).total_memory
-    #cached_memory = torch.cuda.memory_reserved(0)
-    #allocated_memory = torch.cuda.memory_allocated(0)
-    #print('Allocated memory: %d' % (allocated_memory))
 
     loop_and_detect(cam, trt_yolo, conf_th=0.3, vis=vis)
     reporter = MemReporter()
